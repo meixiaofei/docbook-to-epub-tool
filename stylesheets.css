@@ -1,0 +1,271 @@
+.right{
+	text-align:right;
+	text-indent:0;
+}
+
+.center{
+	text-align:center;
+	text-indent:0;
+}
+
+.pic{
+	text-align:center;
+	margin-top:1em;
+	margin-bottom:1em;
+}
+
+.marg-left5{
+	margin-left:5em;
+}
+
+.marg-left6{
+	margin-left:6em;
+}
+
+.marg-left7{
+	margin-left:7em;
+}
+
+.marg-left9{
+	margin-left:9em;
+}
+
+.bodyPic{
+	text-align:center;
+	margin:1em 0 1em 0;
+}
+
+span.super{
+	font-size:0.7em;
+	vertical-align:super;
+}
+
+span.sub{
+	font-size:0.7em;
+	vertical-align:sub;
+}
+
+span.bold{
+	font-weight:bold;
+}
+
+p.bold{
+	font-weight:bold;
+}
+
+.contents-title{
+	font-size: 2em;
+	font-weight: bold;
+	margin-bottom: 0.5em;
+	letter-spacing: 1em;
+	text-align: center;
+	border-bottom: 1.5px dotted #000000;
+}
+
+.contents1{
+	font-size:1em;
+	margin-left:2em;
+	font-family:"simsun";
+	line-height:1.5em;
+	text-align:justify;
+}
+
+.contents2{
+	font-size:1em;
+	margin-left:4em;
+	font-family:"simsun";
+	line-height:1.5em;
+	text-align:justify;
+}
+
+.contents3{
+	font-size:1em;
+	margin-left:6em;
+	font-family:"simsun";
+	line-height:1.5em;
+	text-align:justify;
+}
+
+.h-pic{
+	height:1.5em;
+	vertical-align:middle;
+	margin:0;
+}
+
+.ah-pic{
+	height:2.5em;
+	vertical-align:middle;
+	margin:0;
+}
+
+.content{
+	text-align:justify;
+	text-indent:2.0em;
+	margin: 0em 0em 0em 0em;
+	line-height: 1.618em
+}
+
+.firstTitle{
+	text-align:center;
+	margin: 2em 0em 1em 0em;
+	font-weight:bold;
+	line-height:1.8em;
+}
+
+.secondTitle{
+	text-align:center;
+	font-weight:bold;
+	margin: 2em 0em 1em 0em;
+	line-height:1.6em;
+}
+
+.thirdTitle{
+	text-align:center;
+	margin: 1em 0em 1em 0em;
+	font-weight:bold;
+	line-height:1.4em;
+}
+
+.frontCover{
+	qrfullpage:1;
+	text-align:center;
+}
+
+.copyright{
+	font-size:1em;
+	line-height:1.5em;
+	font-family:"simsun";
+}
+
+.imgtitle{
+	font-family:"汉仪楷体","ETrump KaiTi";
+	font-size:0.85em;
+	line-height:1.4em;
+	text-align:center;
+	text-indent:0;
+	letter-spacing:auto;
+	margin: 0.5em 0 0 0;
+}
+
+.imgdescript{
+	font-family:"汉仪楷体","ETrump KaiTi";
+	font-size:0.75em;
+	line-height:1.2em;
+	text-align:center;
+	margin:0.5em 0 0.8em 0;
+	text-indent:0;
+	letter-spacing:auto;
+}
+
+.dd-bodyTable{
+	text-align:center;
+	margin:1em 0 0 0;
+}
+
+.bg{
+	text-align:center;
+	border: 1px solid #000;
+}
+
+.tg-title{
+	text-align:center;
+	margin: 2em 0em 0em 0em;
+}
+
+.tg-author{
+	text-align:center;
+	margin: 1em 0em 0em 0em;
+}
+
+.tg-pub{
+	text-align:center;
+	margin: 6em 0em 1em 0em;
+}
+
+.content_100{
+	text-align:center;
+	text-indent:0;
+	margin:0em 0em 0em 0em;
+	line-height:1.618em;
+}
+
+.content_101{
+	text-align:center;
+	text-indent:0;
+	margin:0em 0em 0em 0em;
+	line-height:1.618em;
+	font-weight:bold;
+}
+
+.content_102{
+	text-align:justify;
+	text-indent:2.0em;
+	margin:0em 0em 0em 0em;
+	line-height:1.618em;
+	font-weight:bold;
+}
+
+.content_103{
+	text-align:right;
+	text-indent:0;
+	margin:0em 0em 0em 0em;
+	line-height:1.618em;
+}
+
+.pic_104{
+	text-align:center;
+	margin-top:1em;
+	margin-bottom:1em;
+	margin:1em 0 0 0;
+}
+
+.imgtitle_105{
+	font-family:"汉仪楷体","ETrump KaiTi";
+	font-size:0.85em;
+	line-height:1.4em;
+	text-align:right;
+	text-indent:0;
+	letter-spacing:auto;
+	margin:0.5em 0 0 0;
+}
+
+.bodyPic_106{
+	text-align:center;
+	margin:1em 0 1em 0;
+	margin-top:1em;
+	margin-bottom:1em;
+}
+
+.content_107{
+	text-align:justify;
+	text-indent:2.0em;
+	margin:0em 0em 0em 0em;
+	line-height:1.618em;
+	margin-left:5em;
+}
+
+.content_108{
+	text-align:justify;
+	text-indent:2.0em;
+	margin:0em 0em 0em 0em;
+	line-height:1.618em;
+	margin-left:9em;
+}
+
+.content_109{
+	text-align:justify;
+	text-indent:2.0em;
+	margin:0em 0em 0em 0em;
+	line-height:1.618em;
+	margin-left:7em;
+}
+
+.content_110{
+	text-align:justify;
+	text-indent:2.0em;
+	margin:0em 0em 0em 0em;
+	line-height:1.618em;
+	margin-left:6em;
+}
+
+
