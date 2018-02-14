@@ -5,15 +5,36 @@ import tkinter as tk
 from tkinter.filedialog import askopenfilename
 from threading import Thread
 
+# not use yet, just for mark, for more, can see it at http://lxml.de/resolvers.html
+class PrefixResolver(etree.Resolver):
+    def __init__(self, prefix):
+        self.prefix = prefix
+        self.result_xml = '''\
+             <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                 <test xmlns="testNS">%s-TEST</test>
+             </xsl:stylesheet>
+             ''' % prefix
+    def resolve(self, url, pubid, context):
+        if url.startswith(self.prefix):
+            write_to_log("Resolved url %s as prefix %s" % (url, self.prefix))
+            return self.resolve_string(self.result_xml, context)
+
+class FileResolver(etree.Resolver):
+    def resolve(self, url, pubid, context):
+        return self.resolve_filename(url, context)
+
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger('docbook2epub')
 
 DOCBOOK_XSL = os.path.abspath('./docbook-xsl-1.79.1/epub/docbook.xsl')
 MIMETYPE = 'mimetype'
 MIMETYPE_CONTENT = 'application/epub+zip'
+TOOL_DIR = os.getcwd()
 
 xslt_ac = etree.XSLTAccessControl(read_file=True,write_file=True, create_dir=True, read_network=True, write_network=False)
-transform = etree.XSLT(etree.parse(DOCBOOK_XSL), access_control=xslt_ac)
+sourceforge_parser = etree.XMLParser()
+sourceforge_parser.resolvers.add(FileResolver())
+transform = etree.XSLT(etree.parse(DOCBOOK_XSL, sourceforge_parser), access_control=xslt_ac)
 
 def async(f):
     def wrapper(*args, **kwargs):
@@ -29,7 +50,7 @@ def convert_docbook(docbook_file):
     cwd = os.getcwd()
     docbook_dir = os.path.split(docbook_file)[0]
     output_path = os.path.join(docbook_dir, 'output')
-    already_epub = os.path.join(docbook_dir, 'outpub.epub')
+    already_epub = os.path.join(docbook_dir, 'output.epub')
     if os.path.exists(already_epub):
         os.remove(already_epub)
     if os.path.exists(output_path):
@@ -38,7 +59,7 @@ def convert_docbook(docbook_file):
         os.mkdir(output_path)
     shutil.copy(docbook_file, output_path)
     os.chdir(output_path)
-    transform(etree.parse(docbook_file), **{'html.stylesheet': "'stylesheets.css'"})
+    transform(etree.parse(docbook_file, sourceforge_parser), **{'html.stylesheet': "'css/stylesheets.css'"})
 
     os.chdir(cwd)
     return output_path
@@ -59,11 +80,10 @@ def find_resources(path):
                 shutil.copy(os.path.join(os.path.split(path)[0], href), dir)
             except FileNotFoundError as err:
                 if 'stylesheets' in str(err):
-                    shutil.copy(os.path.abspath('./stylesheets.css'), dir)
-                    write_to_log("Copying '%s' into content folder" % href)
+                    shutil.copy(TOOL_DIR + '/stylesheets.css', dir)
+                    write_to_log("[Tool]Copying '%s' into content folder" % href)
                 else:
                     write_to_log(err)
-
     
 def create_mimetype(path):
     f = '%s/%s' % (path, MIMETYPE)
@@ -81,7 +101,7 @@ def create_archive(path):
 
     for root, dirs, files in os.walk('.'):
         for file in files:
-            if not '.epub' in file:
+            if (not '.epub' in file and file != choose_file_name):
                 epub.write(os.path.join(root, file), compress_type=zipfile.ZIP_DEFLATED)
     '''
     for p in os.listdir('.'):
@@ -108,14 +128,20 @@ def convert(docbook_file):
     epub = create_archive(path)
     #shutil.rmtree(path)
 
+    write_to_log('[Output Dir:] ' + os.getcwd())
+    os.chdir(TOOL_DIR)
     write_to_log("Created epub archive as '%s'\n" % epub)
     log.info("Created epub archive as '%s'" % epub)
 
 def select_path():
-    default_dir = os.path.join(os.path.expanduser('~'), 'Desktop', 'docbook-to-epub')
+    #default_dir = os.path.join(os.path.expanduser('~'), 'Desktop', 'docbook-to-epub')
+    default_dir = os.path.join(os.path.expanduser('~'), 'Downloads', 'Main')
     main_xml = askopenfilename(initialdir = default_dir, title = 'Choose Main.xml', filetypes = (('Xml files', '*.xml'),('All files', '*.*')))
     path.set(main_xml)
+    global choose_file_name
+    choose_file_name = os.path.basename(main_xml)
     empty_log()
+    write_to_log('[Choose Dir:] ' + os.path.split(main_xml)[0])
     convert(main_xml)
 
 def write_to_log(msg):
@@ -138,7 +164,7 @@ def git_shell(git_command):
 if __name__ == '__main__':
     git_shell('git pull')
     root = tk.Tk()
-    root.title('Docbook conversion tool--MDPI')
+    root.title('Docbook Conversion Tool--MDPI')
     path = tk.StringVar()
 
     tk.Label(root,text = "Target Path:").grid(row = 0, column = 0, sticky = tk.W)
