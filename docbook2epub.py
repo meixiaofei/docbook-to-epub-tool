@@ -138,6 +138,7 @@ def git_shell(git_command):
 if __name__ == '__main__':
     git_shell('git pull')
     root = tk.Tk()
+    root.title('Docbook conversion tool--MDPI')
     path = tk.StringVar()
 
     tk.Label(root,text = "Target Path:").grid(row = 0, column = 0, sticky = tk.W)
