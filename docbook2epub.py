@@ -27,12 +27,18 @@ def fei(msg):
 
 def convert_docbook(docbook_file):
     cwd = os.getcwd()
-    output_path = os.path.join(os.path.split(docbook_file)[0], 'output')
+    docbook_dir = os.path.split(docbook_file)[0]
+    output_path = os.path.join(docbook_dir, 'output')
+    already_epub = os.path.join(docbook_dir, 'outpub.epub')
+    if os.path.exists(already_epub):
+        os.remove(already_epub)
+    if os.path.exists(output_path):
+        shutil.rmtree(output_path)
     if not os.path.exists(output_path):
         os.mkdir(output_path)
     shutil.copy(docbook_file, output_path)
     os.chdir(output_path)
-    transform(etree.parse(docbook_file))
+    transform(etree.parse(docbook_file), **{'html.stylesheet': "'stylesheets.css'"})
 
     os.chdir(cwd)
     return output_path
@@ -48,11 +54,15 @@ def find_resources(path):
             try:
                 dir = '%s/OEBPS/%s' % (path, os.path.split(href)[0].strip('./'))
                 if not os.path.exists(dir):
-                    write_to_log(dir)
+                    write_to_log('mkdir: ' + dir)
                     os.mkdir(dir)
                 shutil.copy(os.path.join(os.path.split(path)[0], href), dir)
             except FileNotFoundError as err:
-                write_to_log(err)
+                if 'stylesheets' in str(err):
+                    shutil.copy(os.path.abspath('./stylesheets.css'), dir)
+                    write_to_log("Copying '%s' into content folder" % href)
+                else:
+                    write_to_log(err)
 
     
 def create_mimetype(path):
@@ -69,11 +79,10 @@ def create_archive(path):
     epub = zipfile.ZipFile(epub_name, 'w')
     epub.write(MIMETYPE, compress_type=zipfile.ZIP_STORED)
 
-    for dirpath, dirnames, filenames in os.walk('.'):
-        fpath = dirpath
-        fpath = fpath and fpath + os.sep or ''
-        for filename in filenames:
-            epub.write(os.path.join(dirpath, filename), compress_type=zipfile.ZIP_DEFLATED)
+    for root, dirs, files in os.walk('.'):
+        for file in files:
+            if not '.epub' in file:
+                epub.write(os.path.join(root, file), compress_type=zipfile.ZIP_DEFLATED)
     '''
     for p in os.listdir('.'):
         if os.path.isdir(p):
@@ -84,9 +93,6 @@ def create_archive(path):
     '''
     epub.close()
     try:
-        already_epub = os.path.join(output_dir, epub_name)
-        if os.path.exists(already_epub):
-            os.remove(already_epub)
         shutil.move(epub_name, output_dir)
     except shutil.Error as err:
         write_to_log(err)
