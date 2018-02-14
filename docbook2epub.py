@@ -46,7 +46,11 @@ def find_resources(path):
             log.debug("Copying '%s' into content folder" % href)
             #write_to_log("Copying '%s' into content folder\n" % href)
             try:
-                shutil.copy(os.path.join(os.path.split(path)[0], href), '%s/OEBPS' % path)
+                dir = '%s/OEBPS/%s' % (path, os.path.split(href)[0].strip('./'))
+                if not os.path.exists(dir):
+                    write_to_log(dir)
+                    os.mkdir(dir)
+                shutil.copy(os.path.join(os.path.split(path)[0], href), dir)
             except FileNotFoundError as err:
                 write_to_log(err)
 
@@ -64,15 +68,25 @@ def create_archive(path):
     os.chdir(path)    
     epub = zipfile.ZipFile(epub_name, 'w')
     epub.write(MIMETYPE, compress_type=zipfile.ZIP_STORED)
+
+    for dirpath, dirnames, filenames in os.walk('.'):
+        fpath = dirpath
+        fpath = fpath and fpath + os.sep or ''
+        for filename in filenames:
+            epub.write(os.path.join(dirpath, filename), compress_type=zipfile.ZIP_DEFLATED)
+    '''
     for p in os.listdir('.'):
         if os.path.isdir(p):
             for f in os.listdir(p):
                 log.debug("Writing file '%s/%s'" % (p, f))
                 #write_to_log("Writing file '%s/%s'\n" % (p, f))
                 epub.write(os.path.join(p, f), compress_type=zipfile.ZIP_DEFLATED)
+    '''
     epub.close()
     try:
-        os.remove(os.path.join(output_dir, epub_name))
+        already_epub = os.path.join(output_dir, epub_name)
+        if os.path.exists(already_epub):
+            os.remove(already_epub)
         shutil.move(epub_name, output_dir)
     except shutil.Error as err:
         write_to_log(err)

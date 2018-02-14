@@ -221,7 +221,7 @@ set       toc,title
 <xsl:param name="html.longdesc.link" select="$html.longdesc"/>
 <xsl:param name="html.script"/>
 <xsl:param name="html.script.type">text/javascript</xsl:param>
-<xsl:param name="html.stylesheet"/>
+<xsl:param name="html.stylesheet" select="'stylesheets.css'"/>
 <xsl:param name="html.stylesheet.type">text/css</xsl:param>
 <xsl:param name="htmlhelp.alias.file">alias.h</xsl:param>
 <xsl:param name="htmlhelp.autolabel" select="0"/>
