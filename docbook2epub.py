@@ -1,4 +1,6 @@
-#!//usr/bin/env python
+#!/usr/bin/env python3
+
+from __future__ import unicode_literals
 from lxml import etree
 import sys, os, os.path, logging, shutil, zipfile
 import tkinter as tk
@@ -45,6 +47,16 @@ def async(f):
 def fei(msg):
     print(msg)
     sys.exit()
+
+def remove_biblioentry(docbook_file):
+    tree = etree.ElementTree()
+    tree.parse(docbook_file)
+    root =  tree.getroot()
+    for bibliography in root.findall("{http://docbook.org/ns/docbook}bibliography"):
+        for biblioentry in bibliography.findall("{http://docbook.org/ns/docbook}biblioentry"):
+            bibliography.remove(biblioentry)
+    tree.write(docbook_file, encoding='UTF-8')
+    return docbook_file
 
 def convert_docbook(docbook_file):
     cwd = os.getcwd()
@@ -142,7 +154,7 @@ def select_path():
     choose_file_name = os.path.basename(main_xml)
     empty_log()
     write_to_log('[Choose Dir:] ' + os.path.split(main_xml)[0])
-    convert(main_xml)
+    convert(remove_biblioentry(main_xml))
 
 def write_to_log(msg):
     numlines = log_print.index('end - 1 line').split('.')[0]
