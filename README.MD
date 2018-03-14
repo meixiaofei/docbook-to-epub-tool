@@ -7,7 +7,7 @@ Just make it more convenient for non-IT user.
 0. clone or download the whole project.
 1. run `1-install-chocolate.bat` by right click with `run as administrators'.
 2. run `2-install-python.bat` by right click with `run as administrators'.
-3. double click `Double Click To Start.bat`, then all is down, enjoy it.
+3. double click `Double Click To Start.bat`, then all is done, enjoy it.
 
 ### Linux(MacOs)
 1. clone the project(`git@github.com:meixiaofei/docbook-to-epub-tool.git`).
